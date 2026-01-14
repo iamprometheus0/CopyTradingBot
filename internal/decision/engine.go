@@ -19,7 +19,7 @@ func Run(
 		)
 
 		out <- types.Decision{
-			MarketID: evt.MarketID,
+			MarketID: evt.MarketID, // testing
 			Side:     evt.Side,
 			Price:    evt.Price,
 			Size:     evt.Size,
