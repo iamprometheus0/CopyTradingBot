@@ -15,6 +15,8 @@ func Run(
 	in <-chan types.TradeEvent,
 	out chan<- types.Decision,
 ) {
+	defer close(out)
+
 	for evt := range in {
 		book := orderbook.Get(evt.MarketID)
 

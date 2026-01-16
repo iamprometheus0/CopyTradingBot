@@ -1,6 +1,8 @@
 package main
 
 import (
+	"sync"
+
 	"github.com/joho/godotenv"
 
 	"github.com/iamprometheus0/CopyTradingBot/internal/config"
@@ -13,14 +15,26 @@ import (
 
 func main() {
 	logging.Init()
-
 	godotenv.Load()
 	config.Load()
 
-	tradeCh := make(chan types.TradeEvent, 10)
-	decisionCh := make(chan types.Decision, 10)
+	tradeCh := make(chan types.TradeEvent, 1024)
+	decisionCh := make(chan types.Decision, 1024)
 
-	source.StartFakeSource(tradeCh)
-	go decision.Run(tradeCh, decisionCh)
-	execution.Run(decisionCh)
+	var wg sync.WaitGroup
+	wg.Add(2)
+
+	source.StartCLOB(tradeCh)
+
+	go func() {
+		defer wg.Done()
+		decision.Run(tradeCh, decisionCh)
+	}()
+
+	go func() {
+		defer wg.Done()
+		execution.Run(decisionCh)
+	}()
+
+	wg.Wait()
 }
