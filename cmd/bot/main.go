@@ -16,7 +16,8 @@ import (
 func main() {
 	logging.Init()
 	godotenv.Load()
-	config.Load()
+
+	cfg := config.Load()
 
 	tradeCh := make(chan types.TradeEvent, 1024)
 	decisionCh := make(chan types.Decision, 1024)
@@ -24,7 +25,7 @@ func main() {
 	var wg sync.WaitGroup
 	wg.Add(2)
 
-	source.StartCLOB(tradeCh)
+	source.StartCLOB(tradeCh, cfg)
 
 	go func() {
 		defer wg.Done()
