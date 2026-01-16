@@ -219,6 +219,7 @@ Enforce a strict **3% adverse deviation cap** between detected target fill price
 1. WS Event Received (CLOB trade push or RTDS activity)
    - Filter: 15-min crypto binary market? From target wallet?
    - If no → discard
+   EDIT: includes 1 hr markets now as well
 
 2. Extract Target Fill Price
    - detectedPrice = event.fillPrice (or last matched price from trade event)
