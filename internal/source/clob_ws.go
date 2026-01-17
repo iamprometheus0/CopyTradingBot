@@ -69,7 +69,7 @@ func connectAndStream(out chan<- types.TradeEvent, cfg *config.Config) {
 			continue
 		}
 
-		// 🔑 ONLY COPY WHALE WALLETS
+		//  ONLY COPY WHALE WALLETS
 		if !cfg.WhaleWallets[m.Data.Wallet] {
 			continue
 		}
